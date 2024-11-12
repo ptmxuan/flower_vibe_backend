@@ -5,8 +5,9 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 // const productRoutes = require("./routes/productRoutes");
-// const cartRoutes = require("./routes/cartRoutes");
+const cartRoutes = require("./routes/cartRoutes");
 // const orderRoutes = require("./routes/orderRoutes");
 // const employeeRoutes = require("./routes/employeeRoutes");
 // const rentalRoutes = require("./routes/rentalRoutes");
@@ -19,11 +20,11 @@ connectDB();
 app.use(cors());
 
 // Thiết lập các header COOP và COEP
-app.use((req, res, next) => {
-  res.setHeader("Cross-Origin-Opener-Policy", "unsafe-none");
-  res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader("Cross-Origin-Opener-Policy", "unsafe-none");
+//   res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
+//   next();
+// });
 
 app.use(express.json());
 
@@ -31,7 +32,8 @@ app.use(express.json());
 app.use("/api/user", userRoutes);
 // app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
-// app.use("/api/cart", cartRoutes);
+app.use("/api/payment", paymentRoutes);
+app.use("/api/cart", cartRoutes);
 // app.use("/api/order", orderRoutes);
 // app.use("/api/employee", employeeRoutes);
 // app.use("/api/rental", rentalRoutes);
