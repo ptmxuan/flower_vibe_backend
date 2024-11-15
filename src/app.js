@@ -8,7 +8,7 @@ const productRoutes = require("./routes/productRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 // const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
-// const orderRoutes = require("./routes/orderRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 // const employeeRoutes = require("./routes/employeeRoutes");
 // const rentalRoutes = require("./routes/rentalRoutes");
 const app = express();
@@ -34,7 +34,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/cart", cartRoutes);
-// app.use("/api/order", orderRoutes);
+app.use("/api/order", orderRoutes);
 // app.use("/api/employee", employeeRoutes);
 // app.use("/api/rental", rentalRoutes);
 
