@@ -9,6 +9,12 @@ const orderSchema = new mongoose.Schema({
         ref: "Product",
         required: true,
       },
+      itemType: {
+        type: String,
+        enum: ["product", "design"],
+        default: 'product',
+        required: true,
+      },
       quantity: {
         type: Number,
         required: true,

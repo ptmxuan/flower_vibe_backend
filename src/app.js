@@ -9,6 +9,7 @@ const paymentRoutes = require("./routes/paymentRoutes");
 // const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const designRoutes = require("./routes/designRoutes");
 // const employeeRoutes = require("./routes/employeeRoutes");
 // const rentalRoutes = require("./routes/rentalRoutes");
 const app = express();
@@ -26,7 +27,9 @@ app.use(cors());
 //   next();
 // });
 
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 // Định nghĩa các routes
 app.use("/api/user", userRoutes);
@@ -35,6 +38,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/designs", designRoutes);
 // app.use("/api/employee", employeeRoutes);
 // app.use("/api/rental", rentalRoutes);
 

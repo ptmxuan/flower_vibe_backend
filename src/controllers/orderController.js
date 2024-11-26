@@ -6,10 +6,15 @@ exports.createOrder = async (req, res) => {
   try {
     const { items, customer, userId, orderDate, deliveryTime } = req.body;
 
+    if (!items && items.length > 0 || !customer || !userId || !orderDate || !deliveryTime) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
     const order = new Order({
       userId,
       items: items.map((item) => ({
         productId: item.productId,
+        itemType: item.itemType,
         quantity: item.quantity,
         price: item.gia,
       })),

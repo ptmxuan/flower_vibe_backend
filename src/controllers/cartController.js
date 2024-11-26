@@ -1,7 +1,11 @@
 const Cart = require("../models/Cart");
 
 exports.addToCart = async (req, res) => {
-  const { userId, productId, quantity } = req.body;
+  const { userId, itemType, productId, quantity } = req.body;
+
+  if (!userId || !itemType || !productId || !quantity) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
 
   try {
     let cart = await Cart.findOne({ userId });
@@ -16,13 +20,13 @@ exports.addToCart = async (req, res) => {
         cart.items[itemIndex].quantity += quantity;
       } else {
         // Nếu sản phẩm chưa có, thêm mới vào giỏ hàng
-        cart.items.push({ productId, quantity });
+        cart.items.push({ productId, itemType, quantity });
       }
     } else {
       // Nếu giỏ hàng chưa tồn tại, tạo giỏ hàng mới
       cart = new Cart({
         userId,
-        items: [{ productId, quantity }],
+        items: [{ productId, itemType, quantity }],
       });
     }
 
@@ -34,6 +38,7 @@ exports.addToCart = async (req, res) => {
     res.status(500).json({ message: "Error adding to cart", error });
   }
 };
+
 exports.removeFromCart = async (req, res) => {
   const { userId, productIds } = req.body; // Chú ý ở đây, đổi productId thành productIds
 
