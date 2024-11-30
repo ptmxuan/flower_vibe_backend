@@ -33,10 +33,12 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  chude: {
-    type: [String],
-    required: true,
-  },
+  chuDes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ChuDe",
+    },
+  ],
   rate: {
     type: Number,
     required: true,
