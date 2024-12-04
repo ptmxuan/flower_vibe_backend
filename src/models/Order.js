@@ -12,7 +12,7 @@ const orderSchema = new mongoose.Schema({
       itemType: {
         type: String,
         enum: ["product", "design"],
-        default: 'product',
+        default: "product",
         required: true,
       },
       quantity: {
@@ -41,7 +41,7 @@ const orderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default: "Pending",
+    default: "Chưa thanh toán",
   },
   orderDate: {
     type: String,

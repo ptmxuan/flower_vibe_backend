@@ -140,3 +140,32 @@ exports.changePassword = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+exports.getAllUsers = async (req, res) => {
+  console.log("getAllUsers");
+  try {
+    const users = await User.find().select("-password");
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+exports.deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ error: "Người dùng không tồn tại" });
+    }
+
+    await user.deleteOne();
+
+    res.status(200).json({
+      message: "Xóa người dùng thành công",
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

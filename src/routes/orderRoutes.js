@@ -8,7 +8,7 @@ router.post("/", orderController.createOrder);
 
 // Route to get all orders
 router.get("/:userId", orderController.getAllOrders);
-
+router.get("/", orderController.getAllOrdersWithoutUserId);
 // Route to get a specific order by ID
 router.get("/:id", orderController.getOrderById);
 
