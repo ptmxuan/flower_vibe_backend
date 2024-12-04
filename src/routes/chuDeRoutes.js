@@ -5,6 +5,7 @@ const {
   getChuDeById,
   getAllChuDe,
   deleteChuDe,
+  getChuDeByTen,
 } = require("../controllers/chuDeController");
 
 const router = express.Router();
@@ -14,6 +15,9 @@ router.post("/", createChuDe);
 
 // Lấy tất cả các chủ đề
 router.get("/", getAllChuDe);
+
+// Lấy chủ đề theo tên
+router.get("/ten/:ten", getChuDeByTen);
 
 // Lấy tất 1 chủ đề
 router.get("/:id", getChuDeById);

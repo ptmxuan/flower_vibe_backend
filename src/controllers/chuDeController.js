@@ -1,6 +1,31 @@
 const ToPic = require("../models/ChuDe");
 const Product = require("../models/Product");
 
+// Đảm bảo luôn có 1 dòng tồn tại là "Nguyên vật liệu thiết kế hoa"
+exports.ensureDefaultChuDeExists = async () => {
+  try {
+    const defaultName = "Nguyên vật liệu thiết kế hoa";
+
+    // Kiểm tra xem chủ đề mặc định đã tồn tại chưa
+    const existingChuDe = await ToPic.findOne({ ten: defaultName });
+
+    if (!existingChuDe) {
+      // Nếu không tồn tại, tạo mới
+      const defaultChuDe = new ToPic({
+        ten: defaultName,
+        sanPhams: [], // Danh sách sản phẩm mặc định rỗng
+      });
+
+      await defaultChuDe.save();
+      console.log(`Default ChuDe "${defaultName}" has been created.`);
+    } else {
+      console.log(`Default ChuDe "${defaultName}" already exists.`);
+    }
+  } catch (error) {
+    console.error("Error ensuring default ChuDe exists:", error);
+  }
+};
+
 exports.createChuDe = async (req, res) => {
   try {
     const { ten, sanPhams } = req.body;
@@ -8,9 +33,6 @@ exports.createChuDe = async (req, res) => {
     // Kiểm tra dữ liệu đầu vào
     if (!ten) {
       return res.status(400).json({ error: "Tên chủ đề là bắt buộc" });
-    }
-    if (!sanPhams || !Array.isArray(sanPhams) || sanPhams.length === 0) {
-      return res.status(400).json({ error: "Danh sách sản phẩm là bắt buộc" });
     }
 
     // Kiểm tra xem tên đã tồn tại hay chưa
@@ -51,6 +73,42 @@ exports.getAllChuDe = async (req, res) => {
     res.status(200).json({ chuDes: result });
   } catch (error) {
     console.error("Error fetching topics:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// Lấy chủ đề theo tên
+exports.getChuDeByTen = async (req, res) => {
+  try {
+    const { ten } = req.params;
+
+    if (!ten) {
+      return res.status(400).json({ error: "Tên chủ đề là bắt buộc" });
+    }
+
+    const chuDe = await ToPic.findOne({ ten: ten.trim() }).populate(
+      "sanPhams",
+      "ten gia phantramgiamgia luotmua mau hinhdang rate quantity description detailDescription"
+    );
+
+    if (!chuDe) {
+      return res.status(404).json({ error: "Chủ đề không tồn tại" });
+    }
+
+    console.log("chuDe", ten, chuDe);
+
+    res.status(200).json({
+      id: chuDe._id,
+      ten: chuDe.ten,
+      sanPhams: chuDe.sanPhams.map((sp) => ({
+        id: sp._id,
+        ten: sp.ten,
+        gia: sp.gia,
+        description: sp.description,
+      })),
+    });
+  } catch (error) {
+    console.error("Error fetching topic by name:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
