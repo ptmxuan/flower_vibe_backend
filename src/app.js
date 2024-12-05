@@ -12,6 +12,7 @@ const orderRoutes = require("./routes/orderRoutes");
 const designRoutes = require("./routes/designRoutes");
 const chuDeRoutes = require("./routes/chuDeRoutes");
 const nhaCungCapRoutes = require("./routes/nhaCungCapRouters");
+const importOrderRoutes = require("./routes/importOrderRoutes");
 const { ensureDefaultChuDeExists } = require("./controllers/chuDeController");
 // const employeeRoutes = require("./routes/employeeRoutes");
 // const rentalRoutes = require("./routes/rentalRoutes");
@@ -44,6 +45,7 @@ app.use("/api/order", orderRoutes);
 app.use("/api/designs", designRoutes);
 app.use("/api/chu-de", chuDeRoutes);
 app.use("/api/nha-cung-cap", nhaCungCapRoutes);
+app.use("/api/importOrder", importOrderRoutes);
 // app.use("/api/employee", employeeRoutes);
 // app.use("/api/rental", rentalRoutes);
 

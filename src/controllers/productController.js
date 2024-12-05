@@ -90,3 +90,32 @@ exports.deleteProductById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+// Update quantity of a product by ID
+exports.updateQuantity = async (req, res) => {
+  const { quantity } = req.body;
+
+  // Kiểm tra xem quantity có hợp lệ hay không
+  if (quantity === undefined || quantity < 0) {
+    return res.status(400).json({ message: "Invalid quantity value" });
+  }
+
+  try {
+    // Cập nhật số lượng cho sản phẩm
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id, // ID của sản phẩm
+      { quantity }, // Cập nhật chỉ trường quantity
+      { new: true, runValidators: true } // Trả về đối tượng mới sau khi cập nhật
+    );
+
+    // Kiểm tra nếu sản phẩm không tồn tại
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    console.log("updatedProduct", updatedProduct);
+    // Trả về sản phẩm đã được cập nhật
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    // Xử lý lỗi
+    res.status(500).json({ message: error.message });
+  }
+};
