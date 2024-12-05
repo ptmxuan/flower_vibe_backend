@@ -5,6 +5,8 @@ const {
   loginUser,
   updateUserProfile,
   changePassword,
+  getAllUsers,
+  deleteUser,
 } = require("../controllers/userController");
 
 // Đăng nhập
@@ -16,4 +18,6 @@ router.post("/", registerUser);
 // Thay đổi mật khẩu
 router.put("/:id/change-password", changePassword);
 
+router.get("/", getAllUsers);
+router.delete("/:id", deleteUser);
 module.exports = router;

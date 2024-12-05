@@ -6,7 +6,13 @@ exports.createOrder = async (req, res) => {
   try {
     const { items, customer, userId, orderDate, deliveryTime } = req.body;
 
-    if (!items && items.length > 0 || !customer || !userId || !orderDate || !deliveryTime) {
+    if (
+      (!items && items.length > 0) ||
+      !customer ||
+      !userId ||
+      !orderDate ||
+      !deliveryTime
+    ) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -29,13 +35,22 @@ exports.createOrder = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+// Get all orders (không phân biệt userId)
+exports.getAllOrdersWithoutUserId = async (req, res) => {
+  try {
+    const orders = await Order.find(); // Lấy tất cả đơn hàng mà không phân biệt userId
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 // Get all orders
 exports.getAllOrders = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const orders = await Order.find({ userId }); // Tìm các đơn hàng theo userId
+    const orders = await Order.find({ userId });
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -70,12 +85,9 @@ exports.updateOrderStatus = async (req, res) => {
     if (!updatedOrder) {
       return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
     }
-
+    console.log("updatedOrder", updatedOrder);
     // Phản hồi đơn hàng đã cập nhật
-    res.status(200).json({
-      message: "Cập nhật trạng thái đơn hàng thành công",
-      order: updatedOrder,
-    });
+    res.status(200).json(updatedOrder);
   } catch (error) {
     console.error("Lỗi khi cập nhật trạng thái đơn hàng:", error);
     res.status(500).json({ message: "Lỗi server", error });
